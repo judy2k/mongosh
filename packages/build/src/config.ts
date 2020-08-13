@@ -8,8 +8,8 @@ export default interface Config {
   execInput?: string;
   outputDir?: string;
   analyticsConfig?: string;
-  barqueUsername: string;
-  barqueApiKey: string;
+  barqueUsername?: string;
+  barqueApiKey?: string;
   rootDir?: string;
   project?: string;
   revision?: string;

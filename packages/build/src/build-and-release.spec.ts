@@ -17,6 +17,7 @@ describe('buildAndRelease', () => {
   let compileAndZipExecutable: (Config) => Promise<TarballFile>;
   let uploadToEvergreen: (artifact: string, awsKey: string, awsSecret: string, project: string, revision: string) => Promise<void>;
   let releaseToDownloadCenter: (TarballFile, Config) => Promise<void>;
+  let releaseToBarque: (buildVariant: string, arch: string, tarballURL: string, barqueUsername: string, barqueApiKey: string) => Promise<void>;
   let githubRepo: GithubRepo;
 
   beforeEach(() => {
@@ -35,6 +36,8 @@ describe('buildAndRelease', () => {
       downloadCenterAwsKey: 'downloadCenterAwsKey',
       downloadCenterAwsSecret: 'downloadCenterAwsSecret',
       githubToken: 'githubToken',
+      barqueApiKey: 'barqueApiKey',
+      barqueUsername: 'barqueUsername',
       segmentKey: 'segmentKey',
       appleUser: 'appleUser',
       applePassword: 'applePassword',
@@ -50,6 +53,7 @@ describe('buildAndRelease', () => {
 
     tarballFile = { path: 'path', contentType: 'application/gzip' };
     compileAndZipExecutable = sinon.stub().resolves(tarballFile);
+    releaseToBarque = sinon.spy();
     uploadToEvergreen = sinon.spy();
     releaseToDownloadCenter = sinon.spy();
     githubRepo = createStubRepo();
@@ -64,6 +68,7 @@ describe('buildAndRelease', () => {
       await buildAndRelease(
         config,
         githubRepo,
+        releaseToBarque,
         compileAndZipExecutable,
         uploadToEvergreen,
         releaseToDownloadCenter
@@ -87,6 +92,7 @@ describe('buildAndRelease', () => {
     await buildAndRelease(
       config,
       githubRepo,
+      releaseToBarque,
       compileAndZipExecutable,
       uploadToEvergreen,
       releaseToDownloadCenter
@@ -104,6 +110,7 @@ describe('buildAndRelease', () => {
     await buildAndRelease(
       config,
       githubRepo,
+      releaseToBarque,
       compileAndZipExecutable,
       uploadToEvergreen,
       releaseToDownloadCenter
