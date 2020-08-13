@@ -17,6 +17,11 @@ const MONGOSH = path.join(ROOT, 'packages', 'cli-repl');
 const CONFIG = require(path.join(MONGOSH, 'package.json'));
 
 /**
+ * The barque config.
+ */
+const BARQUE_CONFIG = require(path.join(ROOT, 'config', 'repo-config.yml'));
+
+/**
  * The input for the build.
  */
 const INPUT = path.join(MONGOSH, 'lib', 'run.js');
@@ -52,6 +57,9 @@ module.exports = {
   execInput: EXEC_INPUT,
   outputDir: OUTPUT_DIR,
   analyticsConfig: ANALYTICS_CONFIG,
+  barqueConfig: BARQUE_CONFIG,
+  barqueUsername: process.env.BARQUE_USERNAME,
+  barqueApiKey: process.env.BARQUE_API_KEY,
   project: process.env.PROJECT,
   revision: process.env.REVISION,
   branch: process.env.BRANCH_NAME,

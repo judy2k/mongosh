@@ -2,10 +2,11 @@
 import releaseToDownloadCenter from './release-downloads-center';
 import compileAndZipExecutable from './compile-and-zip-executable';
 import uploadArtifactToEvergreen from './evergreen';
+import buildAndRelease from './build-and-release';
 import { GithubRepo } from './github-repo';
 import { Octokit } from '@octokit/rest';
+import releaseToBarque from './barque';
 import Config from './config';
-import buildAndRelease from './build-and-release';
 
 /**
  * Run the release process.
@@ -23,6 +24,7 @@ export default async function release(config: Config): Promise<void> {
   await buildAndRelease(
     config,
     githubRepo,
+    releaseToBarque,
     compileAndZipExecutable,
     uploadArtifactToEvergreen,
     releaseToDownloadCenter
