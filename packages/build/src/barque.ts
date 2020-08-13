@@ -15,8 +15,11 @@ const exec = util.promisify(child_process.exec);
  * @returns {Promise} The promise.
  */
 const releaseToBarque = async (buildVariant: string, arch: string, tarballURL: string, barqueUsername: string, barqueApiKey: string): Promise<any> => {
-  return await exec('curator --help')
-							// "--level", "debug",
+  const { stdout, stderr } = await exec('curator --help')
+  console.log('currator stdout:', stdout);
+  console.error('currator stderr:', stderr);
+
+  return;
 							// "repo", "submit",
 							// "--service", "https://barque.corp.mongodb.com",
 							// "--config", "etc/repo-config.yml",
