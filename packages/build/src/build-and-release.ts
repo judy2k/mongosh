@@ -1,6 +1,7 @@
+import { getArtifactPath } from './evergreen';
 import { GithubRepo } from './github-repo';
-import Config from './config';
 import { TarballFile } from './tarball';
+import Config from './config';
 
 export default async function buildAndRelease(
   config: Config,
@@ -28,7 +29,8 @@ export default async function buildAndRelease(
   );
   console.log('mongosh: internal release completed.');
 
-  await releaseToBarque(tarballFile.path, config);
+  const evergreenTarball = getArtifactPath(config.project, config.revision, tarballFile.path);
+  await releaseToBarque(evergreenTarball, config);
 
   // Only release to public from master and when tagged with the right version.
   if (await githubRepo.shouldDoPublicRelease(config)) {

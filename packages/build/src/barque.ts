@@ -30,19 +30,19 @@ const releaseToBarque = async (tarballURL: string, config: Config): Promise<any>
 
   if (config.platform === Platform.Linux) {
     const { stdout, stderr } = await exec(
-      `curator --level debug hello`
-      // `curator --level debug
-      // repo submit
-      // --service https://barque.corp.mongodb.com
-      // --config ${path.join(__dirname, 'repo-config.yml')}
-      // --distro ${config.buildVariant}
-      // --arch ${arch}
-      // --edition ${mongodbEdition}
-      // --version ${mongodbVersion}
-      // --pacakges ${tarballURL}
-      // --username ${config.barqueUsername}
-      // --api_key ${config.barqueApiKey}
-      // `
+      // `curator --level debug hello`
+      `curator --level debug
+      repo submit
+      --service https://barque.corp.mongodb.com
+      --config ${repoConfig}
+      --distro ${config.buildVariant}
+      --arch ${arch}
+      --edition ${mongodbEdition}
+      --version ${mongodbVersion}
+      --pacakges ${tarballURL}
+      --username ${config.barqueUsername}
+      --api_key ${config.barqueApiKey}
+      `
     )
 
     console.log('currator stdout:', stdout);
