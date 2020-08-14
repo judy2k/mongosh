@@ -5,9 +5,9 @@ import { TarballFile } from './tarball';
 export default async function buildAndRelease(
   config: Config,
   githubRepo: GithubRepo,
-  releaseToBarque: (buildVariant: string, arch: string, tarballURL: string, barqueUsername: string, barqueApiKey: string) => Promise<void>,
+  releaseToBarque: (tarballURL: string, config: Config) => Promise<void>,
   compileAndZipExecutable: (Config) => Promise<TarballFile>,
-  uploadToEvergreen: (artifact: string, awsKey: string, awsSecret: string, project: string, revision: string) => Promise<void>,
+  uploadToEvergreen: (config: string, awsKey: string, awsSecret: string, project: string, revision: string) => Promise<void>,
   releaseToDownloadCenter: (TarballFile, Config) => Promise<void>): Promise<void> {
   console.log(
     'mongosh: beginning release with config:',
@@ -28,14 +28,7 @@ export default async function buildAndRelease(
   );
   console.log('mongosh: internal release completed.');
 
-  await releaseToBarque(
-    config.buildVariant,
-    'amd64',
-    tarballFile.path, 
-    config.barqueUsername,
-    config.barqueApiKey
-  );
-  console.log('mongosh: released to mongodb PPA');
+  await releaseToBarque(tarballFile.path, config);
 
   // Only release to public from master and when tagged with the right version.
   if (await githubRepo.shouldDoPublicRelease(config)) {

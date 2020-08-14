@@ -17,7 +17,7 @@ describe('buildAndRelease', () => {
   let compileAndZipExecutable: (Config) => Promise<TarballFile>;
   let uploadToEvergreen: (artifact: string, awsKey: string, awsSecret: string, project: string, revision: string) => Promise<void>;
   let releaseToDownloadCenter: (TarballFile, Config) => Promise<void>;
-  let releaseToBarque: (buildVariant: string, arch: string, tarballURL: string, barqueUsername: string, barqueApiKey: string) => Promise<void>;
+  let releaseToBarque: (tarballURL: string, config: Config) => Promise<void>;
   let githubRepo: GithubRepo;
 
   beforeEach(() => {

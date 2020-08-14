@@ -1,5 +1,8 @@
-import util from 'util';
 import child_process from 'child_process' 
+import Platform from './platform';
+import Config from './config';
+import util from 'util';
+import path from 'path';
 
 const exec = util.promisify(child_process.exec);
 
@@ -14,22 +17,40 @@ const exec = util.promisify(child_process.exec);
  *
  * @returns {Promise} The promise.
  */
-const releaseToBarque = async (buildVariant: string, arch: string, tarballURL: string, barqueUsername: string, barqueApiKey: string): Promise<any> => {
-  const { stdout, stderr } = await exec('curator --help')
-  console.log('currator stdout:', stdout);
-  console.error('currator stderr:', stderr);
+const releaseToBarque = async (tarballURL: string, config: Config): Promise<any> => {
+  // hard code mongodb edition to 'org' for now
+  const mongodbEdition = 'org';
+  // linux mongodb versions to release to. This should perhaps be an array of
+  // [4.3, 4.4], like mongo-tools
+  const mongodbVersion = '4.4';
+  // just use the amd64 linux edition for now
+  const arch = 'amd64';
+
+  const repoConfig = path.join(config.rootDir, 'config', 'repo-config.yml');
+
+  if (config.platform === Platform.Linux) {
+    const { stdout, stderr } = await exec(
+      `curator --level debug hello`
+      // `curator --level debug
+      // repo submit
+      // --service https://barque.corp.mongodb.com
+      // --config ${path.join(__dirname, 'repo-config.yml')}
+      // --distro ${config.buildVariant}
+      // --arch ${arch}
+      // --edition ${mongodbEdition}
+      // --version ${mongodbVersion}
+      // --pacakges ${tarballURL}
+      // --username ${config.barqueUsername}
+      // --api_key ${config.barqueApiKey}
+      // `
+    )
+
+    console.log('currator stdout:', stdout);
+    console.error('currator stderr:', stderr);
+    return;
+  }
 
   return;
-							// "repo", "submit",
-							// "--service", "https://barque.corp.mongodb.com",
-							// "--config", "etc/repo-config.yml",
-							// "--distro", buildVariant,
-							// "--arch", arch,
-							// "--edition", 'mongodb edition',
-							// "--version", 'mongodb version',
-							// "--packages", tarballURL,
-							// "--username", barqueUsername,
-							// "--api_key", barqueApiKey,
 };
 
 export default releaseToBarque;
